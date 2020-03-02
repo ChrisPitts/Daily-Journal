@@ -2,6 +2,7 @@ from tkinter import *
 from datetime import date
 import os
 import globals
+import version_manager as vm
 
 SAVE_BUTTON_TEXT = "Save"
 SAVE_AND_EXIT_BUTTON_TEXT = "Save and Exit"
@@ -15,12 +16,10 @@ class WindowJournal:
     def __init__(self, journal_date):
         # Read from existing file
         self.journal_date = journal_date
-
+        self.file_name = "%s/%s.txt" % (globals.FILE_DIRECTORY, journal_date)
         # The file already exists
-        if os.path.exists("%s/%s.txt" % (globals.FILE_DIRECTORY, journal_date)):
-            journal_file = open("%s/%s.txt" % (globals.FILE_DIRECTORY, journal_date), 'r')
-            file_array = journal_file.read().split(globals.DELIMITER)
-            journal_file.close()
+        if os.path.exists(self.file_name):
+            file_array = vm.read_file(self.file_name)
 
         # No file exists
         else:
@@ -39,7 +38,7 @@ class WindowJournal:
         for i in range(0, len(JOURNAL_SECTIONS)):
             Label(self.frame, text=JOURNAL_SECTIONS[i]).grid(row=i, column=0, sticky='W')
             self.entries.append(Text(self.frame, width=TEXTBOX_WIDTH))
-            self.entries[i].insert(END, file_array[i])
+            self.entries[i].insert(END, file_array[i+1])
             self.entries[i].grid(row=i, column=1, sticky='W')
 
         # Save buttons
@@ -54,12 +53,10 @@ class WindowJournal:
         self.window.mainloop()
 
     def save(self):
-        file_string = ''
-        journal_file = open("%s/%s.txt" % (globals.FILE_DIRECTORY, self.journal_date), 'w')
+        write_array = [vm.CURRENT_VERSION]
         for entry in self.entries:
-            file_string = file_string + entry.get(1.0, END) + globals.DELIMITER
-        journal_file.write(file_string)
-        journal_file.close()
+            write_array.append(entry.get(1.0, END))
+        vm.save_file(self.file_name, write_array)
 
     def save_and_exit(self):
         self.save()

@@ -22,7 +22,6 @@ class WindowLoad:
         for root, dirs, files in os.walk(globals.FILE_DIRECTORY):
             for filename in files:
                 dates.append(date(2000 + int(filename[6:8]), int(filename[0:2]), int(filename[3:5])))
-
         return dates
 
     def open_journal(self, journal_date):
