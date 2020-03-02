@@ -3,6 +3,7 @@ import os
 import globals
 from datetime import date
 from journal_window import WindowJournal
+from load_window import WindowLoad
 
 # TITLE
 WINDOW_TITLE = "Main Menu"
@@ -21,7 +22,7 @@ class WindowMainMenu:
 
         # initialize the buttons
         Button(self.window, text=TODAYS_JOURNAL_BUTTON_TEXT, command=self.onclick_new_journal).grid(row=0, column=0, sticky='W')
-        Button(self.window, text=LOAD_JOURNAL_BUTTON_TEXT).grid(row=1, column=0, sticky='W')
+        Button(self.window, text=LOAD_JOURNAL_BUTTON_TEXT, command=self.load_journal).grid(row=1, column=0, sticky='W')
 
         self.window.mainloop()
 
@@ -29,6 +30,9 @@ class WindowMainMenu:
         if not os.path.exists(globals.FILE_DIRECTORY):
             os.mkdir(globals.FILE_DIRECTORY)
         WindowJournal(date.today().strftime('%m-%d-%y'))
+
+    def load_journal(self):
+        WindowLoad()
 
 
 WindowMainMenu()
