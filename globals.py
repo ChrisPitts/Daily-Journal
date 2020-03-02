@@ -1,0 +1,2 @@
+FILE_DIRECTORY = "Journals"
+DELIMITER = '\0'
