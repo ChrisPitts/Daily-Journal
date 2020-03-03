@@ -6,7 +6,7 @@ import version_manager as vm
 
 SAVE_BUTTON_TEXT = "Save"
 SAVE_AND_EXIT_BUTTON_TEXT = "Save and Exit"
-JOURNAL_SECTIONS = ["Day summary", "Emotions", "Ethics"]
+
 
 TEXTBOX_WIDTH=100
 TEXTBOX_HEIGHT=25
@@ -23,7 +23,7 @@ class WindowJournal:
 
         # No file exists
         else:
-            file_array = [''] * len(JOURNAL_SECTIONS)
+            file_array = [''] * (len(vm.SECTIONS) + 1)
 
         # Initialize the window
         self.window = Tk()
@@ -35,15 +35,15 @@ class WindowJournal:
         self.entries = []   # Holds all the text fields
 
         # Initialize the journal fields
-        for i in range(0, len(JOURNAL_SECTIONS)):
-            Label(self.frame, text=JOURNAL_SECTIONS[i]).grid(row=i, column=0, sticky='W')
+        for i in range(0, len(vm.SECTIONS)):
+            Label(self.frame, text=vm.SECTIONS[i]).grid(row=i, column=0, sticky='W')
             self.entries.append(Text(self.frame, width=TEXTBOX_WIDTH))
             self.entries[i].insert(END, file_array[i+1])
             self.entries[i].grid(row=i, column=1, sticky='W')
 
         # Save buttons
-        Button(self.frame, text=SAVE_AND_EXIT_BUTTON_TEXT, command=self.save_and_exit).grid(row=len(JOURNAL_SECTIONS), column=1, sticky='W')
-        Button(self.frame, text=SAVE_BUTTON_TEXT, command=self.save).grid(row=len(JOURNAL_SECTIONS), column=0, sticky='W')
+        Button(self.frame, text=SAVE_AND_EXIT_BUTTON_TEXT, command=self.save_and_exit).grid(row=len(vm.SECTIONS), column=1, sticky='W')
+        Button(self.frame, text=SAVE_BUTTON_TEXT, command=self.save).grid(row=len(vm.SECTIONS), column=0, sticky='W')
 
         self.canvas.update_idletasks()
         self.canvas.create_window(0, 0, anchor='nw', window=self.frame)
